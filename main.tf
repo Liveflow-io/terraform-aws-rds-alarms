@@ -214,3 +214,24 @@ resource "aws_cloudwatch_metric_alarm" "read_iops_is_too_high" {
   }
   tags = var.tags
 }
+
+# Free local storage space (Aurora)
+resource "aws_cloudwatch_metric_alarm" "free_local_storage_is_too_low" {
+  count               = var.create_free_local_storage_alarm ? 1 : 0
+  alarm_name          = "${var.prefix}rds-${var.db_instance_id}-lowFreeLocalStorage"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = var.evaluation_period
+  metric_name         = "FreeLocalStorage"
+  namespace           = "AWS/RDS"
+  period              = var.statistic_period
+  statistic           = "Average"
+  threshold           = var.free_local_storage_too_low_threshold
+  alarm_description   = "Average free local storage is too low."
+  alarm_actions       = var.actions_alarm
+  ok_actions          = var.actions_ok
+
+  dimensions = {
+    DBInstanceIdentifier = var.db_instance_id
+  }
+  tags = var.tags
+}

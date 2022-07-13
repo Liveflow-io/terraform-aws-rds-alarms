@@ -75,6 +75,12 @@ variable "create_read_iops_alarm" {
   description = "Whether or not to create the Read I/O alarm.  Default is to create it."
 }
 
+variable "create_free_local_storage_alarm" {
+  type        = bool
+  default     = true
+  description = "Whether or not to create the low free storage space alarm.  Default is to create it."
+}
+
 variable "anomaly_period" {
   type        = string
   default     = "600"
@@ -145,6 +151,12 @@ variable "read_iops_too_high_threshold" {
   type        = string
   default     = "10000"
   description = "Alarm threshold for the 'readIOPS' alarm"
+}
+
+variable "free_local_storage_too_low_threshold" {
+  type        = string
+  default     = "4000"
+  description = "Alarm threshold for the 'FreeLocalStorage' alarm"
 }
 
 variable "tags" {
