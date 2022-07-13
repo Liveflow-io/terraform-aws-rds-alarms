@@ -193,3 +193,24 @@ resource "aws_cloudwatch_metric_alarm" "maximum_used_transaction_ids_too_high" {
   alarm_actions       = var.actions_alarm
   ok_actions          = var.actions_ok
 }
+
+# Read I/O
+resource "aws_cloudwatch_metric_alarm" "read_iops_is_too_high" {
+  count               = var.create_read_iops_alarm ? 1 : 0
+  alarm_name          = "${var.prefix}rds-${var.db_instance_id}-highReadIOPS"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = var.evaluation_period
+  metric_name         = "ReadIOPS"
+  namespace           = "AWS/RDS"
+  period              = var.statistic_period
+  statistic           = "Average"
+  threshold           = var.read_iops_too_high_threshold
+  alarm_description   = "Average Read I/O is too high."
+  alarm_actions       = var.actions_alarm
+  ok_actions          = var.actions_ok
+
+  dimensions = {
+    DBInstanceIdentifier = var.db_instance_id
+  }
+  tags = var.tags
+}
