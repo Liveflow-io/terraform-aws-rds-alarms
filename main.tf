@@ -1,7 +1,7 @@
 // CPU Utilization
 resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
   count               = var.create_high_cpu_alarm ? 1 : 0
-  alarm_name          = "${var.prefix}rds-${var.db_instance_id}-highCPUUtilization"
+  alarm_name          = "${var.prefix}rds-${var.db_cluster_id}-highCPUUtilization-${var.role}"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = var.evaluation_period
   metric_name         = "CPUUtilization"
@@ -14,14 +14,15 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
   ok_actions          = var.actions_ok
 
   dimensions = {
-    DBInstanceIdentifier = var.db_instance_id
+    DBClusterIdentifier = var.db_cluster_id
+    Role                = var.role
   }
   tags = var.tags
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_credit_balance_too_low" {
   count               = var.create_low_cpu_credit_alarm ? length(regexall("(t2|t3)", var.db_instance_class)) > 0 ? 1 : 0 : 0
-  alarm_name          = "${var.prefix}rds-${var.db_instance_id}-lowCPUCreditBalance"
+  alarm_name          = "${var.prefix}rds-${var.db_cluster_id}-lowCPUCreditBalance-${var.role}"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = var.evaluation_period
   metric_name         = "CPUCreditBalance"
@@ -34,7 +35,8 @@ resource "aws_cloudwatch_metric_alarm" "cpu_credit_balance_too_low" {
   ok_actions          = var.actions_ok
 
   dimensions = {
-    DBInstanceIdentifier = var.db_instance_id
+    DBClusterIdentifier = var.db_cluster_id
+    Role                = var.role
   }
   tags = var.tags
 }
@@ -42,7 +44,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_credit_balance_too_low" {
 // Disk Utilization
 resource "aws_cloudwatch_metric_alarm" "disk_queue_depth_too_high" {
   count               = var.create_high_queue_depth_alarm ? 1 : 0
-  alarm_name          = "${var.prefix}rds-${var.db_instance_id}-highDiskQueueDepth"
+  alarm_name          = "${var.prefix}rds-${var.db_cluster_id}-highDiskQueueDepth-${var.role}"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = var.evaluation_period
   metric_name         = "DiskQueueDepth"
@@ -55,14 +57,15 @@ resource "aws_cloudwatch_metric_alarm" "disk_queue_depth_too_high" {
   ok_actions          = var.actions_ok
 
   dimensions = {
-    DBInstanceIdentifier = var.db_instance_id
+    DBClusterIdentifier = var.db_cluster_id
+    Role                = var.role
   }
   tags = var.tags
 }
 
 resource "aws_cloudwatch_metric_alarm" "disk_free_storage_space_too_low" {
   count               = var.create_low_disk_space_alarm ? 1 : 0
-  alarm_name          = "${var.prefix}rds-${var.db_instance_id}-lowFreeStorageSpace"
+  alarm_name          = "${var.prefix}rds-${var.db_cluster_id}-lowFreeStorageSpace-${var.role}"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = var.evaluation_period
   metric_name         = "FreeStorageSpace"
@@ -75,14 +78,15 @@ resource "aws_cloudwatch_metric_alarm" "disk_free_storage_space_too_low" {
   ok_actions          = var.actions_ok
 
   dimensions = {
-    DBInstanceIdentifier = var.db_instance_id
+    DBClusterIdentifier = var.db_cluster_id
+    Role                = var.role
   }
   tags = var.tags
 }
 
 resource "aws_cloudwatch_metric_alarm" "disk_burst_balance_too_low" {
   count               = var.create_low_disk_burst_alarm ? 1 : 0
-  alarm_name          = "${var.prefix}rds-${var.db_instance_id}-lowEBSBurstBalance"
+  alarm_name          = "${var.prefix}rds-${var.db_cluster_id}-lowEBSBurstBalance-${var.role}"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = var.evaluation_period
   metric_name         = "BurstBalance"
@@ -95,7 +99,8 @@ resource "aws_cloudwatch_metric_alarm" "disk_burst_balance_too_low" {
   ok_actions          = var.actions_ok
 
   dimensions = {
-    DBInstanceIdentifier = var.db_instance_id
+    DBClusterIdentifier = var.db_cluster_id
+    Role                = var.role
   }
   tags = var.tags
 }
@@ -103,7 +108,7 @@ resource "aws_cloudwatch_metric_alarm" "disk_burst_balance_too_low" {
 // Memory Utilization
 resource "aws_cloudwatch_metric_alarm" "memory_freeable_too_low" {
   count               = var.create_low_memory_alarm ? 1 : 0
-  alarm_name          = "${var.prefix}rds-${var.db_instance_id}-lowFreeableMemory"
+  alarm_name          = "${var.prefix}rds-${var.db_cluster_id}-lowFreeableMemory-${var.role}"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = var.evaluation_period
   metric_name         = "FreeableMemory"
@@ -116,14 +121,15 @@ resource "aws_cloudwatch_metric_alarm" "memory_freeable_too_low" {
   ok_actions          = var.actions_ok
 
   dimensions = {
-    DBInstanceIdentifier = var.db_instance_id
+    DBClusterIdentifier = var.db_cluster_id
+    Role                = var.role
   }
   tags = var.tags
 }
 
 resource "aws_cloudwatch_metric_alarm" "memory_swap_usage_too_high" {
   count               = var.create_swap_alarm ? 1 : 0
-  alarm_name          = "${var.prefix}rds-${var.db_instance_id}-highSwapUsage"
+  alarm_name          = "${var.prefix}rds-${var.db_cluster_id}-highSwapUsage-${var.role}"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = var.evaluation_period
   metric_name         = "SwapUsage"
@@ -136,7 +142,8 @@ resource "aws_cloudwatch_metric_alarm" "memory_swap_usage_too_high" {
   ok_actions          = var.actions_ok
 
   dimensions = {
-    DBInstanceIdentifier = var.db_instance_id
+    DBClusterIdentifier = var.db_cluster_id
+    Role                = var.role
   }
   tags = var.tags
 }
@@ -144,7 +151,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_swap_usage_too_high" {
 // Connection Count
 resource "aws_cloudwatch_metric_alarm" "connection_count_anomalous" {
   count               = var.create_anomaly_alarm ? 1 : 0
-  alarm_name          = "${var.prefix}rds-${var.db_instance_id}-anomalousConnectionCount"
+  alarm_name          = "${var.prefix}rds-${var.db_cluster_id}-anomalousConnectionCount-${var.role}"
   comparison_operator = "GreaterThanUpperThreshold"
   evaluation_periods  = var.evaluation_period
   threshold_metric_id = "e1"
@@ -170,7 +177,8 @@ resource "aws_cloudwatch_metric_alarm" "connection_count_anomalous" {
       unit        = "Count"
 
       dimensions = {
-        DBInstanceIdentifier = var.db_instance_id
+        DBClusterIdentifier = var.db_cluster_id
+        Role                = var.role
       }
     }
   }
@@ -181,7 +189,7 @@ resource "aws_cloudwatch_metric_alarm" "connection_count_anomalous" {
 // more info - https://aws.amazon.com/blogs/database/implement-an-early-warning-system-for-transaction-id-wraparound-in-amazon-rds-for-postgresql/
 resource "aws_cloudwatch_metric_alarm" "maximum_used_transaction_ids_too_high" {
   count               = contains(["aurora-postgresql", "postgres"], var.engine) ? 1 : 0
-  alarm_name          = "${var.prefix}rds-${var.db_instance_id}-maximumUsedTransactionIDs"
+  alarm_name          = "${var.prefix}rds-${var.db_cluster_id}-maximumUsedTransactionIDs-${var.role}"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = var.evaluation_period
   metric_name         = "MaximumUsedTransactionIDs"
@@ -197,7 +205,7 @@ resource "aws_cloudwatch_metric_alarm" "maximum_used_transaction_ids_too_high" {
 # Read I/O
 resource "aws_cloudwatch_metric_alarm" "read_iops_is_too_high" {
   count               = var.create_read_iops_alarm ? 1 : 0
-  alarm_name          = "${var.prefix}rds-${var.db_instance_id}-highReadIOPS"
+  alarm_name          = "${var.prefix}rds-${var.db_cluster_id}-highReadIOPS-${var.role}"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = var.evaluation_period
   metric_name         = "ReadIOPS"
@@ -210,7 +218,8 @@ resource "aws_cloudwatch_metric_alarm" "read_iops_is_too_high" {
   ok_actions          = var.actions_ok
 
   dimensions = {
-    DBInstanceIdentifier = var.db_instance_id
+    DBClusterIdentifier = var.db_cluster_id
+    Role                = var.role
   }
   tags = var.tags
 }
@@ -218,7 +227,7 @@ resource "aws_cloudwatch_metric_alarm" "read_iops_is_too_high" {
 # Free local storage space (Aurora)
 resource "aws_cloudwatch_metric_alarm" "free_local_storage_is_too_low" {
   count               = var.create_free_local_storage_alarm ? 1 : 0
-  alarm_name          = "${var.prefix}rds-${var.db_instance_id}-lowFreeLocalStorage"
+  alarm_name          = "${var.prefix}rds-${var.db_cluster_id}-lowFreeLocalStorage-${var.role}"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = var.evaluation_period
   metric_name         = "FreeLocalStorage"
@@ -231,7 +240,8 @@ resource "aws_cloudwatch_metric_alarm" "free_local_storage_is_too_low" {
   ok_actions          = var.actions_ok
 
   dimensions = {
-    DBInstanceIdentifier = var.db_instance_id
+    DBClusterIdentifier = var.db_cluster_id
+    Role                = var.role
   }
   tags = var.tags
 }
