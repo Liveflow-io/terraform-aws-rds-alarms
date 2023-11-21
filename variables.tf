@@ -121,12 +121,6 @@ variable "cpu_utilization_too_high_threshold" {
   description = "Alarm threshold for the 'highCPUUtilization' alarm"
 }
 
-variable "cpu_credit_balance_too_low_threshold" {
-  type        = string
-  default     = "100"
-  description = "Alarm threshold for the 'lowCPUCreditBalance' alarm"
-}
-
 variable "disk_queue_depth_too_high_threshold" {
   type        = string
   default     = "64"
