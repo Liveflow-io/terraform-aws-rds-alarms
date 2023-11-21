@@ -32,12 +32,6 @@ variable "create_high_cpu_alarm" {
   description = "Whether or not to create the high cpu alarm.  Default is to create it (for backwards compatible support)"
 }
 
-variable "create_low_cpu_credit_alarm" {
-  type        = bool
-  default     = true
-  description = "Whether or not to create the low cpu credit alarm.  Default is to create it (for backwards compatible support)"
-}
-
 variable "create_high_queue_depth_alarm" {
   type        = bool
   default     = true
