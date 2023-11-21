@@ -20,27 +20,6 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
   tags = var.tags
 }
 
-resource "aws_cloudwatch_metric_alarm" "cpu_credit_balance_too_low" {
-  count               = var.create_low_cpu_credit_alarm ? length(regexall("(t2|t3)", var.db_instance_class)) > 0 ? 1 : 0 : 0
-  alarm_name          = "${var.prefix}rds-${var.db_cluster_id}-lowCPUCreditBalance-${var.role}"
-  comparison_operator = "LessThanThreshold"
-  evaluation_periods  = var.evaluation_period
-  metric_name         = "CPUCreditBalance"
-  namespace           = "AWS/RDS"
-  period              = var.statistic_period
-  statistic           = "Average"
-  threshold           = var.cpu_credit_balance_too_low_threshold
-  alarm_description   = "Average database CPU credit balance is too low, a negative performance impact is imminent."
-  alarm_actions       = var.actions_alarm
-  ok_actions          = var.actions_ok
-
-  dimensions = {
-    DBClusterIdentifier = var.db_cluster_id
-    Role                = var.role
-  }
-  tags = var.tags
-}
-
 // Disk Utilization
 resource "aws_cloudwatch_metric_alarm" "disk_queue_depth_too_high" {
   count               = var.create_high_queue_depth_alarm ? 1 : 0
