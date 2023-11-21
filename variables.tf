@@ -1,8 +1,3 @@
-variable "db_instance_id" {
-  type        = string
-  description = "RDS Instance ID"
-}
-
 variable "db_cluster_id" {
   type        = string
   description = "RDS Cluster ID"
@@ -173,11 +168,6 @@ variable "tags" {
   type        = map(string)
   default     = {}
   description = "Tags to attach to each alarm"
-}
-
-variable "db_instance_class" {
-  type        = string
-  description = "The rds instance class, e.g. db.t3.medium"
 }
 
 variable "engine" {
