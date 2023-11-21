@@ -3,6 +3,16 @@ variable "db_instance_id" {
   description = "RDS Instance ID"
 }
 
+variable "db_cluster_id" {
+  type        = string
+  description = "RDS Cluster ID"
+}
+
+variable "role" {
+  type        = string
+  description = "READER or WRITER role dimension to differentiate alarms for the same cluster"
+}
+
 variable "prefix" {
   type        = string
   default     = ""
@@ -69,6 +79,18 @@ variable "create_anomaly_alarm" {
   description = "Whether or not to create the fairly noisy anomaly alarm.  Default is to create it (for backwards compatible support), but recommended to disable this for non-production databases"
 }
 
+variable "create_read_iops_alarm" {
+  type        = bool
+  default     = true
+  description = "Whether or not to create the Read I/O alarm.  Default is to create it."
+}
+
+variable "create_free_local_storage_alarm" {
+  type        = bool
+  default     = true
+  description = "Whether or not to create the low free storage space alarm.  Default is to create it."
+}
+
 variable "anomaly_period" {
   type        = string
   default     = "600"
@@ -82,13 +104,13 @@ variable "anomaly_band_width" {
 }
 
 variable "actions_alarm" {
-  type        = list
+  type        = list(any)
   default     = []
   description = "A list of actions to take when alarms are triggered. Will likely be an SNS topic for event distribution."
 }
 
 variable "actions_ok" {
-  type        = list
+  type        = list(any)
   default     = []
   description = "A list of actions to take when alarms are cleared. Will likely be an SNS topic for event distribution."
 }
@@ -135,6 +157,18 @@ variable "memory_swap_usage_too_high_threshold" {
   description = "Alarm threshold for the 'highSwapUsage' alarm"
 }
 
+variable "read_iops_too_high_threshold" {
+  type        = string
+  default     = "10000"
+  description = "Alarm threshold for the 'readIOPS' alarm"
+}
+
+variable "free_local_storage_too_low_threshold" {
+  type        = string
+  default     = "4000"
+  description = "Alarm threshold for the 'FreeLocalStorage' alarm"
+}
+
 variable "tags" {
   type        = map(string)
   default     = {}
@@ -142,14 +176,14 @@ variable "tags" {
 }
 
 variable "db_instance_class" {
-  type      = string
+  type        = string
   description = "The rds instance class, e.g. db.t3.medium"
 }
 
 variable "engine" {
-  type = string
+  type        = string
   description = "The RDS engine being used. Used for postgres or mysql specific alarms"
-  default = ""
+  default     = ""
 }
 
 variable "maximum_used_transaction_ids_too_high_threshold" {
