@@ -3,6 +3,11 @@ variable "db_cluster_id" {
   description = "RDS Cluster ID"
 }
 
+variable "db_instance_id" {
+  type        = string
+  description = "RDS Instance ID"
+}
+
 variable "role" {
   type        = string
   description = "READER or WRITER role dimension to differentiate alarms for the same cluster"
